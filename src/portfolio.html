@@ -1,514 +1,182 @@
 <title>Ronit Peswani</title>
-<meta name="description" content="Ronit Peswani: engineer working on LLM inference, GPU performance, and AI agents. Applied Math & Data Science at UC Berkeley.">
+<meta name="description" content="Ronit Peswani is an engineer in San Francisco working on LLM inference, GPU performance and AI agents. Applied Math & Data Science at UC Berkeley.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap">
 <style>
-/* Layout: one left-aligned reading column; a profiler-trace strip in the hero is the single loud element. */
+/* Layout: one narrow text column, lists instead of cards, grayscale with underlined links. */
 :root {
-  --bg: #f3f5f7;
-  --surface: #ffffff;
-  --fg: #12161d;
-  --muted: #56606e;
-  --line: #d9dee5;
-  --accent: #0b6b86;
-  --idle: #c98a0c;
-  --idle-soft: #f6e7c4;
-  --lane: #e6eaef;
-  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --body: "IBM Plex Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
-  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --step--1: 0.8125rem;
-  --step-0: 1rem;
-  --step-1: 1.1875rem;
-  --step-2: 1.5rem;
-  --step-4: clamp(2.6rem, 7vw, 4.4rem);
+  --bg: #fbfbfc;
+  --fg: #16171a;
+  --muted: #6e7079;
+  --faint: #a3a5ad;
+  --rule: #e4e5e9;
+  --sans: "Geist", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0d1117; --surface: #151b23; --fg: #e5e9ef; --muted: #98a2b0; --line: #262f3a;
-    --accent: #5cc6e2; --idle: #e8b54a; --idle-soft: #3a2f16; --lane: #1c242e; color-scheme: dark;
+    --bg: #111113; --fg: #ececef; --muted: #8d8f98; --faint: #5c5e66; --rule: #26272c; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0d1117; --surface: #151b23; --fg: #e5e9ef; --muted: #98a2b0; --line: #262f3a;
-  --accent: #5cc6e2; --idle: #e8b54a; --idle-soft: #3a2f16; --lane: #1c242e; color-scheme: dark;
+  --bg: #111113; --fg: #ececef; --muted: #8d8f98; --faint: #5c5e66; --rule: #26272c; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body {
   margin: 0;
   background: var(--bg);
   color: var(--fg);
-  font: 400 var(--step-0)/1.6 var(--body);
+  font: 400 15px/1.7 var(--sans);
   -webkit-font-smoothing: antialiased;
-  padding-inline: 20px;
+  text-rendering: optimizeLegibility;
+  padding-inline: 24px;
 }
-a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
-a:hover { text-decoration-thickness: 2px; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+::selection { background: var(--fg); color: var(--bg); }
 
-.wrap { max-width: 860px; margin: 0 auto; }
+main { max-width: 600px; margin: 0 auto; padding-block: clamp(56px, 14vh, 128px) 96px; }
 
-/* top bar */
-.top {
-  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--line);
-  margin-inline: -20px; padding: 12px 20px;
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--faint);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 120ms;
 }
-.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-.mark { font: 700 var(--step-0)/1 var(--display); color: var(--fg); text-decoration: none; letter-spacing: -0.01em; }
-.top nav { display: flex; gap: 18px; flex-wrap: wrap; }
-.top nav a { font: 500 var(--step--1)/1 var(--mono); color: var(--muted); text-decoration: none; }
-.top nav a:hover { color: var(--fg); }
+a:hover { text-decoration-color: var(--fg); }
+:focus-visible { outline: 1.5px solid var(--fg); outline-offset: 3px; border-radius: 2px; }
 
-/* hero */
-.hero { padding-block: 64px 28px; display: grid; gap: 22px; }
-.status {
-  display: inline-flex; align-items: center; gap: 8px; width: fit-content;
-  font: 500 var(--step--1)/1.3 var(--mono); color: var(--muted);
-  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; background: var(--surface);
+header h1 { font: 500 15px/1.4 var(--sans); margin: 0; }
+header p { margin: 0; color: var(--muted); }
+
+.intro { margin-top: 32px; display: grid; gap: 16px; }
+.intro p { margin: 0; text-wrap: pretty; }
+.intro i { font: italic 400 1.12em/1 var(--serif); letter-spacing: -0.005em; }
+
+section { margin-top: 56px; }
+h2 { font: 400 15px/1.4 var(--sans); color: var(--muted); margin: 0 0 16px; }
+
+ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 20px; }
+.row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.row .title { font-weight: 500; min-width: 0; }
+.row .title span { font-weight: 400; color: var(--muted); }
+.row time, .row .meta { flex: none; color: var(--faint); font-variant-numeric: tabular-nums; font-size: 14px; }
+li p { margin: 2px 0 0; color: var(--muted); text-wrap: pretty; }
+
+.contact { display: grid; gap: 6px; }
+.contact div { display: flex; gap: 16px; align-items: baseline; }
+.contact dt { width: 80px; flex: none; color: var(--muted); }
+.contact dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.copy {
+  font: inherit; font-size: 14px; color: var(--faint); background: none; border: 0; padding: 0 0 0 10px; cursor: pointer;
 }
-.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
-h1 {
-  font: 800 var(--step-4)/0.98 var(--display);
-  letter-spacing: -0.035em; margin: 0; text-wrap: balance;
-}
-.lede { font-size: var(--step-1); line-height: 1.5; max-width: 40em; margin: 0; text-wrap: pretty; }
-.lede em { font-style: normal; color: var(--accent); font-weight: 500; }
-.links { display: flex; flex-wrap: wrap; gap: 10px; }
-.btn {
-  font: 500 var(--step--1)/1 var(--mono); text-decoration: none; color: var(--fg);
-  border: 1px solid var(--line); background: var(--surface); padding: 10px 14px; border-radius: 6px;
-  display: inline-flex; align-items: center; gap: 8px;
-}
-.btn:hover { border-color: var(--fg); }
-.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.copyable { cursor: pointer; }
-.copyable[data-done]::after { content: "copied"; color: var(--accent); }
+.copy:hover { color: var(--fg); }
 
-/* trace figure */
-.trace {
-  margin: 8px 0 0; background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
-  padding: 14px 14px 10px;
-}
-.trace canvas { display: block; width: 100%; height: 132px; }
-.trace figcaption {
-  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px;
-  font: 400 var(--step--1)/1.45 var(--mono); color: var(--muted); padding-top: 10px; border-top: 1px dashed var(--line); margin-top: 8px;
-}
-.trace figcaption b { color: var(--idle); font-weight: 500; }
-.trace figcaption .ok { color: var(--accent); font-weight: 500; }
+footer { margin-top: 72px; color: var(--faint); font-size: 14px; }
 
-/* sections */
-section { padding-block: 44px; border-top: 1px solid var(--line); scroll-margin-top: 64px; }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 26px; }
-h2 { font: 700 var(--step-2)/1.15 var(--display); letter-spacing: -0.02em; margin: 0; }
-.sec-head p { margin: 0; font: 400 var(--step--1)/1.4 var(--mono); color: var(--muted); }
-
-/* experience */
-.jobs { display: grid; gap: 36px; }
-.job { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 8px 28px; }
-.when { font: 400 var(--step--1)/1.5 var(--mono); color: var(--muted); padding-top: 4px; font-variant-numeric: tabular-nums; }
-.job-body { min-width: 0; }
-.job h3 { font: 700 var(--step-1)/1.3 var(--display); margin: 0; letter-spacing: -0.01em; }
-.job h3 span { font: 400 var(--step-0)/1.3 var(--body); color: var(--muted); }
-.job .blurb { margin: 6px 0 10px; max-width: 62ch; }
-.job ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; max-width: 64ch; }
-.job li::marker { color: var(--muted); }
-.num { font-family: var(--mono); font-size: 0.92em; font-weight: 500; color: var(--fg); white-space: nowrap; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
-.tags span { font: 400 0.75rem/1 var(--mono); color: var(--muted); border: 1px solid var(--line); padding: 5px 8px; border-radius: 4px; }
-
-.contracts { margin-top: 40px; display: grid; gap: 0; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
-.contracts h3 { font: 500 var(--step--1)/1 var(--mono); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 0; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-.contract { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 4px 28px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-.contract:last-child { border-bottom: 0; }
-.contract p { margin: 0; max-width: 62ch; min-width: 0; }
-.contract strong { font-weight: 600; }
-
-/* projects */
-.projects { display: grid; gap: 18px; }
-.proj {
-  background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 22px;
-  display: grid; grid-template-columns: minmax(0, 1fr) 15rem; gap: 18px 28px;
-}
-.proj-main { min-width: 0; }
-.proj h3 { font: 700 var(--step-1)/1.2 var(--display); margin: 0 0 2px; letter-spacing: -0.01em; }
-.proj .kind { font: 400 var(--step--1)/1.4 var(--mono); color: var(--muted); margin: 0 0 10px; }
-.proj p { margin: 0 0 10px; max-width: 60ch; }
-.proj .plinks { display: flex; gap: 16px; flex-wrap: wrap; font: 500 var(--step--1)/1.4 var(--mono); margin-top: 12px; }
-.stats { margin: 0; display: grid; gap: 12px; align-content: start; border-left: 1px solid var(--line); padding-left: 20px; }
-.stats div { display: grid; gap: 1px; }
-.stats dt { font: 500 var(--step-1)/1.1 var(--mono); color: var(--fg); font-variant-numeric: tabular-nums; }
-.stats dd { margin: 0; font-size: var(--step--1); color: var(--muted); line-height: 1.4; }
-
-/* skills */
-.skills { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 24px 32px; }
-.skills h3 { font: 500 var(--step--1)/1 var(--mono); color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 10px; }
-.skills p { margin: 0; }
-
-.edu { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: 8px 28px; }
-.edu h3 { font: 700 var(--step-1)/1.3 var(--display); margin: 0; }
-.edu p { margin: 4px 0 0; max-width: 62ch; }
-
-/* contact */
-.contact h2 { font-size: clamp(1.8rem, 5vw, 2.6rem); max-width: 18ch; text-wrap: balance; }
-.contact p { max-width: 52ch; color: var(--muted); }
-footer { padding-block: 28px 48px; border-top: 1px solid var(--line); font: 400 var(--step--1)/1.5 var(--mono); color: var(--muted); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-
-@media (max-width: 680px) {
-  .hero { padding-block: 40px 20px; }
-  .job, .contract, .edu { grid-template-columns: minmax(0, 1fr); }
-  .proj { grid-template-columns: minmax(0, 1fr); padding: 18px; }
-  .stats { border-left: 0; padding-left: 0; border-top: 1px solid var(--line); padding-top: 14px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
-  .top nav { gap: 14px; }
-  .trace canvas { height: 116px; }
+@media (max-width: 520px) {
+  body { font-size: 15px; }
+  .row { flex-direction: column; gap: 0; }
+  .contact div { flex-direction: column; gap: 0; }
 }
 </style>
 
-<header class="top">
-  <div class="wrap">
-    <a class="mark" href="#top">Ronit Peswani</a>
-    <nav aria-label="Sections">
-      <a href="#work">work</a>
-      <a href="#projects">projects</a>
-      <a href="#skills">skills</a>
-      <a href="#contact">contact</a>
-    </nav>
-  </div>
-</header>
-
-<main class="wrap" id="top">
-  <div class="hero">
-    <span class="status">Member of Technical Staff at Fifth Space · open to Summer 2027 SWE / ML infra roles</span>
+<main>
+  <header>
     <h1>Ronit Peswani</h1>
-    <p class="lede">I make <em>LLMs run faster</em> on the GPUs people already own, and I build <em>AI agents</em> that a company can trust with its real documents. Applied Math &amp; Data Science at UC Berkeley. Based in San Francisco.</p>
-    <div class="links">
-      <a class="btn primary" href="https://github.com/r5sp" target="_blank" rel="noopener">GitHub ↗</a>
-      <a class="btn" href="https://www.linkedin.com/in/ronitpeswani/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <button class="btn copyable" type="button" data-copy="ronitpeswani@berkeley.edu" id="copy-email-top">ronitpeswani@berkeley.edu&nbsp;</button>
-    </div>
+    <p>Engineer, San Francisco</p>
+  </header>
 
-    <figure class="trace" aria-label="Illustration of a GPU profiler trace with idle gaps attributed to dataloader stalls">
-      <canvas id="trace" role="img" aria-label="Three lanes: GPU compute kernels, host-to-device copies, and dataloader workers. Amber gaps on the GPU lane line up with dataloader activity."></canvas>
-      <figcaption>
-        <span>fig. 1 · one training step, PyTorch Profiler trace</span>
-        <span><b>■ idle</b> lines up with dataloader work → verdict <span class="ok">DATALOADER_BOUND</span></span>
-      </figcaption>
-    </figure>
+  <div class="intro">
+    <p>I spend most of my time <i>making models fast and making agents correct.</i> Right now I'm on the technical staff at <a href="https://www.fifthspace.com" target="_blank" rel="noopener">Fifth Space</a>, building the internal AI platform the whole firm uses to review deal documents, leases and invoices. Before that I worked on LLM serving at Ghost AI, and I started ET, a tool that tells you why your GPU is sitting idle.</p>
+    <p>I study Applied Mathematics and Data Science at UC Berkeley, graduating in 2028. I'm looking for Summer 2027 internships in infrastructure, inference or applied AI.</p>
+    <p>Away from a keyboard I keep planted aquariums, train calisthenics, swim, DJ and play a lot of pickleball. I speak Hindi and Spanish.</p>
   </div>
 
-  <section id="work" aria-labelledby="work-h">
-    <div class="sec-head">
-      <h2 id="work-h">Work</h2>
-      <p>most recent first</p>
-    </div>
-
-    <div class="jobs">
-      <article class="job">
-        <div class="when">May 2026 – now<br>San Francisco</div>
-        <div class="job-body">
-          <h3>Fifth Space <span>· Member of Technical Staff</span></h3>
-          <p class="blurb">I build the firm's internal AI platform: one Google sign-in, a set of agents for deal documents, leases, consultant invoices, rent rolls and timesheets. It launched to every employee in September 2026.</p>
-          <ul>
-            <li>Python backend services that automate deal-document review and data entry, saving about <span class="num">30 analyst hrs/week</span>.</li>
-            <li>An LLM contract-review agent for due diligence that cuts manual legal review time by about <span class="num">40%</span> per deal.</li>
-            <li>Async ingestion and parsing pipelines that handle <span class="num">50+</span> documents per deal, with structured extraction across <span class="num">220+</span> unstructured documents.</li>
-            <li>A verification layer: a second model from a different provider re-checks extracted fields, and every value has to be found in the source text before an analyst sees it.</li>
-            <li>Shipped the boring parts too: rate limiting, an audit log, security headers, owner-scoped access, CI on every merge.</li>
-          </ul>
-          <div class="tags"><span>Python</span><span>FastAPI</span><span>Postgres</span><span>React</span><span>LangChain</span><span>Claude + OpenAI APIs</span><span>Docker</span></div>
-        </div>
-      </article>
-
-      <article class="job">
-        <div class="when">May – Jul 2026<br>San Francisco</div>
-        <div class="job-body">
-          <h3>Ghost AI <span>· Engineer</span></h3>
-          <p class="blurb">Early engineer on a 7-person team building dedicated hardware and the backend for personal AI agents.</p>
-          <ul>
-            <li>Built an LLM serving stack with continuous batching and speculative decoding to raise per-GPU throughput.</li>
-            <li>Multi-step tool-calling agents over MCP with long-term memory, integrating <span class="num">40+</span> external services.</li>
-            <li>Async Python/Rust backend on FastAPI and gRPC supporting <span class="num">500+</span> concurrent agent sessions.</li>
-            <li>On-device inference on Apple Silicon via llama.cpp, running 7B models locally at about <span class="num">55 tok/s</span>.</li>
-          </ul>
-          <div class="tags"><span>Python</span><span>Rust</span><span>gRPC</span><span>MCP</span><span>llama.cpp</span></div>
-        </div>
-      </article>
-
-      <article class="job">
-        <div class="when">Nov 2025 – Apr 2026<br>San Francisco</div>
-        <div class="job-body">
-          <h3>ET Optimization <span>· Founding Engineer</span></h3>
-          <p class="blurb">GPU idle-time diagnosis for training and inference. Feed it a trace or point it at a serving box, and it names the root cause and the fix.</p>
-          <ul>
-            <li>Kubernetes-based infrastructure to profile GPU utilization across distributed training pipelines; instrumented <span class="num">50+</span> jobs for kernel timings and inter-GPU communication.</li>
-            <li>Idle-time attribution over PyTorch and CUDA traces that recovered about <span class="num">30%</span> of wasted GPU cycles.</li>
-            <li>Automated diagnostics that took bottleneck triage from hours to minutes per job.</li>
-            <li>A llama.cpp monitor with an MoE-aware decode roofline. Tested on a real L40S: prefix caching dropped time-to-first-token on a 22.8K-token prompt from <span class="num">3.49 s</span> to <span class="num">0.010 s</span>.</li>
-          </ul>
-          <div class="tags"><span>PyTorch</span><span>CUDA traces</span><span>Kubernetes</span><span>llama.cpp</span><span>NVML</span></div>
-        </div>
-      </article>
-    </div>
-
-    <div class="contracts">
-      <h3>Contract &amp; consulting</h3>
-      <div class="contract">
-        <span class="when">Aug 2026 – now</span>
-        <p><strong>FedEx</strong>, Technical Project Manager. Star-schema analytics layer over 60K monthly records across all 7 Caribbean markets; revenue shifts decomposed with hierarchical ANOVA and HC3-robust OLS.</p>
-      </div>
-      <div class="contract">
-        <span class="when">Jan – Jun 2026</span>
-        <p><strong>Pfizer</strong>, AI &amp; Strategy Senior Analyst. Prescriber-targeting pipelines over prescribing and claims data, and an LLM call-list system with AI startup Markov, raising projected rep efficiency about 20%.</p>
-      </div>
-      <div class="contract">
-        <span class="when">Aug – Dec 2025</span>
-        <p><strong>Supercell</strong>, AI Analyst. Benchmarked per-session inference cost across 7B–70B model tiers at 1M+ DAU, clustered 20+ AI-native titles by retention curve, and wrote a 50-page technical evaluation report.</p>
-      </div>
-    </div>
+  <section aria-labelledby="work">
+    <h2 id="work">Work</h2>
+    <ol>
+      <li>
+        <div class="row"><span class="title">Fifth Space <span>· Member of Technical Staff</span></span><time>2026 – now</time></div>
+        <p>A set of agents behind one Google sign-in for a real estate investment firm: contract review, document extraction across 220+ deal files, and a verification step where a second model from another provider re-checks every field against the source. It saves analysts about 30 hours a week and went company-wide in September.</p>
+      </li>
+      <li>
+        <div class="row"><span class="title">Ghost AI <span>· Engineer</span></span><time>2026</time></div>
+        <p>Early engineer on a team of seven building hardware and backend for personal AI agents. I worked on the serving stack (continuous batching, speculative decoding), MCP tool-calling across 40+ services, and llama.cpp on Apple Silicon at about 55 tokens a second for 7B models.</p>
+      </li>
+      <li>
+        <div class="row"><span class="title">ET Optimization <span>· Founding Engineer</span></span><time>2025 – 2026</time></div>
+        <p>Idle-time attribution from PyTorch and CUDA traces across 50+ distributed training jobs, which recovered about 30% of wasted GPU cycles and took triage from hours to minutes. Later, a llama.cpp monitor that knows how many bytes an MoE model really reads per token.</p>
+      </li>
+    </ol>
   </section>
 
-  <section id="projects" aria-labelledby="proj-h">
-    <div class="sec-head">
-      <h2 id="proj-h">Projects</h2>
-      <p>all open source, numbers from the repos' own benchmarks</p>
-    </div>
-
-    <div class="projects">
-      <article class="proj">
-        <div class="proj-main">
-          <h3>nanoserve</h3>
-          <p class="kind">LLM inference engine · Python, NumPy</p>
-          <p>The main vLLM ideas, built from scratch and serving real GPT-2 weights: paged KV cache with prefix caching and copy-on-write, Orca-style continuous batching with preemption, and speculative decoding with exact rejection sampling. My own safetensors parser and BPE tokenizer, plus an OpenAI-compatible streaming server.</p>
-          <p>Logits match Hugging Face to 4e-4, and greedy speculative output is token-for-token identical to plain greedy.</p>
-          <div class="plinks"><a href="https://github.com/r5sp/nanoserve" target="_blank" rel="noopener">github.com/r5sp/nanoserve ↗</a></div>
-        </div>
-        <dl class="stats">
-          <div><dt>2.29×</dt><dd>throughput, continuous batching vs sequential</dd></div>
-          <div><dt>95.9%</dt><dd>KV memory used with paging, vs 13.1% contiguous</dd></div>
-          <div><dt>3,728 → 1,040</dt><dd>prefill tokens with prefix caching on</dd></div>
-        </dl>
-      </article>
-
-      <article class="proj">
-        <div class="proj-main">
-          <h3>raftkv</h3>
-          <p class="kind">distributed key-value store · Python asyncio</p>
-          <p>Raft from the paper (elections, replication, snapshots) plus exactly-once client sessions and ReadIndex linearizable reads. The core is a pure state machine with no I/O, so a deterministic simulator can run the real node code over a network that drops, duplicates, reorders and partitions messages while nodes crash.</p>
-          <p>A linearizability checker (Wing &amp; Gong with Lowe's memoization) verifies every client history afterward.</p>
-          <div class="plinks"><a href="https://github.com/r5sp/raftkv" target="_blank" rel="noopener">github.com/r5sp/raftkv ↗</a></div>
-        </div>
-        <dl class="stats">
-          <div><dt>2,000</dt><dd>fault-injection seeds, 30 simulated seconds each</dd></div>
-          <div><dt>~10 ms</dt><dd>to check a 2,500-op, 8-client history</dd></div>
-          <div><dt>203 ms</dt><dd>to a new leader after SIGKILL in the demo</dd></div>
-        </dl>
-      </article>
-
-      <article class="proj">
-        <div class="proj-main">
-          <h3>emberdb</h3>
-          <p class="kind">LSM-tree storage engine · Rust</p>
-          <p>WAL, memtable, SSTables with my own bloom filters, leveled compaction, and an atomically swapped manifest. One runtime dependency. Crash recovery keeps exactly what was acknowledged, and a property test runs random op sequences against a BTreeMap model, reopening the DB mid-run.</p>
-          <div class="plinks"><a href="https://github.com/r5sp/emberdb" target="_blank" rel="noopener">github.com/r5sp/emberdb ↗</a></div>
-        </div>
-        <dl class="stats">
-          <div><dt>11.3×</dt><dd>faster missing-key reads with bloom filters</dd></div>
-          <div><dt>4.8M ops/s</dt><dd>readmissing at 10 bits/key, 1M keys</dd></div>
-          <div><dt>2.97×</dt><dd>write amplification, sequential inserts</dd></div>
-        </dl>
-      </article>
-
-      <article class="proj">
-        <div class="proj-main">
-          <h3>ET / gpu-doctor</h3>
-          <p class="kind">GPU performance diagnosis · Python</p>
-          <p>The open-source core of ET. A PyTorch Profiler trace goes in and a root-cause verdict comes out (dataloader-bound, sync-bound, launch-bound and others), with the evidence and fixes. The inference side reads GGUF files to build a decode roofline for llama.cpp, counting only the experts each token actually touches in MoE models.</p>
-          <div class="plinks"><a href="https://github.com/Ronit-Devan/Fixer" target="_blank" rel="noopener">github.com/Ronit-Devan/Fixer ↗</a></div>
-        </div>
-        <dl class="stats">
-          <div><dt>2.1 GB</dt><dd>read per token for Qwen3-30B-A3B, not the 18.6 GB file</dd></div>
-          <div><dt>335×</dt><dd>faster first token on a warm prefix, real L40S</dd></div>
-          <div><dt>539</dt><dd>tests across 5 packages, ruff + mypy gated</dd></div>
-        </dl>
-      </article>
-
-      <article class="proj">
-        <div class="proj-main">
-          <h3>GroundTruth</h3>
-          <p class="kind">verification-first applied AI demo · React</p>
-          <p>A public, rebranded demo of the agent platform pattern I use at work, with an evals dashboard up front that answers "how do you know it works": golden-set pass rates, verification catch rate, and an audit log. Includes an invoice check that catches a $78,500 figure miscopied as $785, and a voice lead qualifier that runs fully in the browser.</p>
-          <div class="plinks">
-            <a href="https://r5sp.github.io/groundtruth-ai-demo/" target="_blank" rel="noopener">live demo ↗</a>
-            <a href="https://github.com/r5sp/groundtruth-ai-demo" target="_blank" rel="noopener">source ↗</a>
-          </div>
-        </div>
-        <dl class="stats">
-          <div><dt>3-stage</dt><dd>extract, cross-model check, source grounding</dd></div>
-          <div><dt>0 backend</dt><dd>runs as a static site on seeded data</dd></div>
-        </dl>
-      </article>
-    </div>
+  <section aria-labelledby="projects">
+    <h2 id="projects">Projects</h2>
+    <ol>
+      <li>
+        <div class="row"><a class="title" href="https://github.com/r5sp/nanoserve" target="_blank" rel="noopener">nanoserve</a><span class="meta">Python</span></div>
+        <p>The core ideas of vLLM in about 2,300 lines of NumPy: a paged KV cache with prefix sharing, continuous batching that gets 2.29× the throughput of running requests one by one, and speculative decoding with exact rejection sampling. Serves real GPT-2 weights.</p>
+      </li>
+      <li>
+        <div class="row"><a class="title" href="https://github.com/r5sp/raftkv" target="_blank" rel="noopener">raftkv</a><span class="meta">Python</span></div>
+        <p>A Raft key-value store, tested by a deterministic simulator that drops, reorders and partitions messages while nodes crash, over 2,000 seeds. A linearizability checker reads every client history afterward.</p>
+      </li>
+      <li>
+        <div class="row"><a class="title" href="https://github.com/r5sp/emberdb" target="_blank" rel="noopener">emberdb</a><span class="meta">Rust</span></div>
+        <p>An LSM-tree storage engine with a write-ahead log, leveled compaction and my own bloom filters, which make lookups for missing keys 11.3× faster. One dependency.</p>
+      </li>
+      <li>
+        <div class="row"><a class="title" href="https://github.com/Ronit-Devan/Fixer" target="_blank" rel="noopener">gpu-doctor</a><span class="meta">Python</span></div>
+        <p>The open-source core of ET. A profiler trace goes in and a root cause comes out, like a GPU starved by its dataloader, with the fix.</p>
+      </li>
+      <li>
+        <div class="row"><a class="title" href="https://r5sp.github.io/groundtruth-ai-demo/" target="_blank" rel="noopener">GroundTruth</a><span class="meta">React</span></div>
+        <p>A public demo of how I build agents for work where mistakes cost money, with the evals shown first. One check catches $78,500 miscopied as $785.</p>
+      </li>
+    </ol>
   </section>
 
-  <section id="skills" aria-labelledby="skills-h">
-    <div class="sec-head"><h2 id="skills-h">Skills</h2></div>
-    <div class="skills">
-      <div><h3>Languages &amp; systems</h3><p>Python, Rust, SQL, Bash, TypeScript. Linux, Docker, Kubernetes, FastAPI, gRPC, asyncio and concurrency.</p></div>
-      <div><h3>ML &amp; inference</h3><p>PyTorch, CUDA traces, llama.cpp, paged KV caches, continuous batching, speculative decoding, RAG, MCP, LLM evals.</p></div>
-      <div><h3>Data</h3><p>Relational modeling and star schemas, OLS and robust regression, ANOVA, k-means, feature engineering.</p></div>
-    </div>
+  <section aria-labelledby="consulting">
+    <h2 id="consulting">Consulting</h2>
+    <ol>
+      <li>
+        <div class="row"><span class="title">FedEx <span>· Technical Project Manager</span></span><time>2026 – now</time></div>
+        <p>Analytics layer and regression models over 60K monthly shipping records in seven Caribbean markets.</p>
+      </li>
+      <li>
+        <div class="row"><span class="title">Pfizer <span>· AI &amp; Strategy Senior Analyst</span></span><time>2026</time></div>
+        <p>Prescriber targeting from claims data, and an LLM call-list system for U.S. sales reps built with the startup Markov.</p>
+      </li>
+      <li>
+        <div class="row"><span class="title">Supercell <span>· AI Analyst</span></span><time>2025</time></div>
+        <p>Inference cost per session across 7B to 70B models at a million daily users, for evaluating AI-native games.</p>
+      </li>
+    </ol>
   </section>
 
-  <section aria-labelledby="edu-h">
-    <div class="sec-head"><h2 id="edu-h">Education</h2></div>
-    <div class="edu">
-      <div class="when">Expected May 2028</div>
-      <div>
-        <h3>University of California, Berkeley</h3>
-        <p>B.A. Applied Mathematics &amp; Data Science. Coursework: Data Structures, Computational Structures in Data Science, Principles &amp; Techniques of Data Science, Abstract Linear Algebra, Differential Equations, Multivariable Calculus.</p>
-        <p class="when" style="margin-top:10px">Speaks Hindi and Spanish. Off the clock: aquascaping, calisthenics, swimming, DJing, pickleball.</p>
-      </div>
-    </div>
+  <section aria-labelledby="contact">
+    <h2 id="contact">Contact</h2>
+    <dl class="contact">
+      <div><dt>Email</dt><dd><span id="email">ronitpeswani@berkeley.edu</span><button class="copy" type="button" id="copy-email">copy</button></dd></div>
+      <div><dt>GitHub</dt><dd><a href="https://github.com/r5sp" target="_blank" rel="noopener">r5sp</a></dd></div>
+      <div><dt>LinkedIn</dt><dd><a href="https://www.linkedin.com/in/ronitpeswani/" target="_blank" rel="noopener">ronitpeswani</a></dd></div>
+    </dl>
   </section>
 
-  <section id="contact" class="contact" aria-labelledby="contact-h">
-    <h2 id="contact-h">Building something fast or something that has to be right?</h2>
-    <p>I'm looking for Summer 2027 internships in software engineering, ML infrastructure and inference. Email is the quickest way to reach me.</p>
-    <div class="links">
-      <button class="btn primary copyable" type="button" data-copy="ronitpeswani@berkeley.edu" id="copy-email-bottom">ronitpeswani@berkeley.edu&nbsp;</button>
-      <a class="btn" href="https://www.linkedin.com/in/ronitpeswani/" target="_blank" rel="noopener">LinkedIn ↗</a>
-      <a class="btn" href="https://github.com/r5sp" target="_blank" rel="noopener">GitHub ↗</a>
-    </div>
-  </section>
-
-  <footer>
-    <span>© 2026 Ronit Peswani</span>
-    <span>hand-written HTML, no framework</span>
-  </footer>
+  <footer>Berkeley and San Francisco</footer>
 </main>
 
 <script>
-(function () {
-  // copy-to-clipboard for the email buttons
-  document.querySelectorAll(".copyable").forEach(function (el) {
-    el.addEventListener("click", function () {
-      var text = el.getAttribute("data-copy");
-      var done = function () { el.setAttribute("data-done", ""); setTimeout(function () { el.removeAttribute("data-done"); }, 1600); };
-      try {
-        navigator.clipboard.writeText(text).then(done, function () { selectText(el); });
-      } catch (e) { selectText(el); }
-    });
-  });
-  function selectText(el) {
-    var r = document.createRange(); r.selectNodeContents(el);
+document.getElementById("copy-email").addEventListener("click", function () {
+  var btn = this, text = document.getElementById("email").textContent;
+  function done() { btn.textContent = "copied"; setTimeout(function () { btn.textContent = "copy"; }, 1500); }
+  function select() {
+    var r = document.createRange(); r.selectNodeContents(document.getElementById("email"));
     var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
   }
-
-  // profiler-trace strip
-  var cv = document.getElementById("trace");
-  if (!cv) return;
-  var ctx = cv.getContext("2d");
-  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  // deterministic layout of one step: [start, end] in 0..1
-  var seed = 7;
-  function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
-  var gpu = [], idle = [], loader = [], copy = [];
-  var t = 0.01;
-  while (t < 0.99) {
-    var gap = rnd() < 0.34 ? 0.05 + rnd() * 0.07 : 0.004 + rnd() * 0.006;
-    if (gap > 0.03) {
-      idle.push([t, Math.min(t + gap, 0.99)]);
-      loader.push([t - 0.01, Math.min(t + gap - 0.004, 0.99)]);
-      copy.push([t + gap - 0.012, t + gap - 0.002]);
-    }
-    t += gap;
-    var k = 0.012 + rnd() * 0.03;
-    gpu.push([t, Math.min(t + k, 0.99)]);
-    t += k;
-  }
-
-  function css(name) { return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
-
-  function draw(cursor) {
-    var dpr = window.devicePixelRatio || 1;
-    var w = cv.clientWidth, h = cv.clientHeight;
-    if (cv.width !== Math.round(w * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, w, h);
-    var labelW = w < 480 ? 64 : 92;
-    var x0 = labelW, x1 = w - 4, span = x1 - x0;
-    var lanes = [["GPU 0", gpu], ["H2D copy", copy], ["dataloader", loader]];
-    var laneH = (h - 20) / 3;
-    var accent = css("--accent"), idleC = css("--idle"), idleSoft = css("--idle-soft"), lane = css("--lane"), muted = css("--muted");
-    ctx.font = "500 11px " + css("--mono");
-    ctx.textBaseline = "middle";
-
-    lanes.forEach(function (L, i) {
-      var y = i * laneH + 4, bh = laneH - 10;
-      ctx.fillStyle = muted;
-      ctx.fillText(L[0], 0, y + bh / 2);
-      ctx.fillStyle = lane;
-      ctx.fillRect(x0, y, span, bh);
-      if (i === 0) {
-        idle.forEach(function (s) {
-          if (s[0] > cursor) return;
-          var e = Math.min(s[1], cursor);
-          ctx.fillStyle = idleSoft; ctx.fillRect(x0 + s[0] * span, y, (e - s[0]) * span, bh);
-          ctx.fillStyle = idleC; ctx.fillRect(x0 + s[0] * span, y + bh - 3, (e - s[0]) * span, 3);
-        });
-      }
-      L[1].forEach(function (s) {
-        if (s[0] > cursor) return;
-        var e = Math.min(s[1], cursor);
-        ctx.fillStyle = i === 0 ? accent : (i === 2 ? idleC : muted);
-        ctx.globalAlpha = i === 0 ? 1 : 0.75;
-        ctx.fillRect(x0 + s[0] * span, y + 2, Math.max(1, (e - s[0]) * span - 1), bh - 4);
-        ctx.globalAlpha = 1;
-      });
-    });
-
-    // time axis
-    var ay = h - 10;
-    ctx.fillStyle = muted;
-    ctx.font = "400 10px " + css("--mono");
-    [0, 0.25, 0.5, 0.75, 1].forEach(function (f) {
-      var x = x0 + f * span;
-      ctx.fillRect(x, ay - 6, 1, 4);
-      var label = Math.round(f * 480) + " ms";
-      var tw = ctx.measureText(label).width;
-      ctx.fillText(label, Math.min(Math.max(x - tw / 2, x0), x1 - tw), ay + 2);
-    });
-
-    if (cursor < 1) {
-      ctx.fillStyle = css("--fg");
-      ctx.fillRect(x0 + cursor * span, 0, 1, h - 18);
-    }
-  }
-
-  var start = null, DUR = 2600;
-  function frame(ts) {
-    if (start === null) start = ts;
-    var p = Math.min(1, (ts - start) / DUR);
-    draw(1 - Math.pow(1 - p, 2));
-    if (p < 1) requestAnimationFrame(frame);
-  }
-  draw(1); // complete at rest
-  if (!reduce && "requestAnimationFrame" in window) {
-    requestAnimationFrame(function () { draw(0); requestAnimationFrame(frame); });
-  }
-  window.addEventListener("resize", function () { draw(1); });
-  if (window.matchMedia) {
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () { draw(1); });
-  }
-  new MutationObserver(function () { draw(1); }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { draw(1); });
-})();
+  try { navigator.clipboard.writeText(text).then(done, select); } catch (e) { select(); }
+});
 </script>
