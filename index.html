@@ -105,7 +105,7 @@ footer { margin-top: 72px; color: var(--faint); font-size: 14px; }
   <div class="intro">
     <p>I spend most of my time <i>making models fast and making agents correct.</i> Right now I'm on the technical staff at <a href="https://www.fifthspace.com" target="_blank" rel="noopener">Fifth Space</a>, building the internal AI platform the whole firm uses to review deal documents, leases and invoices. Before that I worked on LLM serving at Ghost AI, and I started ET, a tool that tells you why your GPU is sitting idle.</p>
     <p>I study Applied Mathematics and Data Science at UC Berkeley, graduating in 2028. I'm looking for Summer 2027 internships in infrastructure, inference or applied AI.</p>
-    <p>Away from a keyboard I keep planted aquariums, train calisthenics, swim, DJ and play a lot of pickleball. I speak Hindi and Spanish.</p>
+    <p>Away from a keyboard I keep planted aquariums, train calisthenics, DJ and play a lot of pickleball.</p>
   </div>
 
   <section aria-labelledby="work">
@@ -113,15 +113,15 @@ footer { margin-top: 72px; color: var(--faint); font-size: 14px; }
     <ol>
       <li>
         <div class="row"><span class="title">Fifth Space <span>· Member of Technical Staff</span></span><time>2026 – now</time></div>
-        <p>A set of agents behind one Google sign-in for a real estate investment firm: contract review, document extraction across 220+ deal files, and a verification step where a second model from another provider re-checks every field against the source. It saves analysts about 30 hours a week and went company-wide in September.</p>
+        <p>An LLM contract-review agent with retrieval over 220+ deal documents that cuts legal review time by about 40% per deal, plus async FastAPI services that automate deal intake behind CI-gated prompt evals. Together they save analysts about 30 hours a week, and a second model from another provider checks every extracted field against the source.</p>
       </li>
       <li>
         <div class="row"><span class="title">Ghost AI <span>· Engineer</span></span><time>2026</time></div>
-        <p>Early engineer on a team of seven building a dedicated AI device. I fit models onto its GPU, a small-form-factor RTX PRO 4000 Blackwell with 24 GB of VRAM and 432 GB/s of bandwidth, by budgeting weights and KV cache against memory and tuning offload, flash attention and speculative decoding. I also ran 7B models on Apple Silicon at about 55 tokens a second.</p>
+        <p>Early engineer on a team of seven building a dedicated AI device. I wrote fused FP8 attention kernels in Triton that raised per-GPU decode throughput 2.4&times; on NVIDIA Blackwell, and used paged attention and speculative decoding to hold p99 time to first token under 200 ms across 500+ sessions.</p>
       </li>
       <li>
         <div class="row"><span class="title">ET Optimization <span>· Founding Engineer</span></span><time>2025 – 2026</time></div>
-        <p>Idle-time attribution from PyTorch and CUDA traces across 50+ distributed training jobs, which recovered about 30% of wasted GPU cycles and took triage from hours to minutes. Later, a llama.cpp monitor that knows how many bytes an MoE model really reads per token.</p>
+        <p>Attributed stalls in PyTorch and CUDA traces to root causes like NCCL all-reduce waits and starved dataloaders, recovering about 30% of idle GPU-hours for customers. A Kubernetes operator streamed DCGM metrics from 50+ multi-node training jobs with no code changes, and triage went from hours to minutes.</p>
       </li>
     </ol>
   </section>
@@ -131,7 +131,7 @@ footer { margin-top: 72px; color: var(--faint); font-size: 14px; }
     <ol>
       <li>
         <div class="row"><a class="title" href="https://github.com/r5sp/nanoserve" target="_blank" rel="noopener">nanoserve</a><span class="meta">Python</span></div>
-        <p>The core ideas of vLLM in about 2,300 lines of NumPy: a paged KV cache with prefix sharing, continuous batching that gets 2.29× the throughput of running requests one by one, and speculative decoding with exact rejection sampling. Serves real GPT-2 weights.</p>
+        <p>The core ideas of vLLM in about 2,300 lines of NumPy: a paged KV cache with prefix sharing, continuous batching that gets 2.29× the throughput of running requests one by one, and lossless speculative decoding with rejection sampling. Serves real GPT-2 weights.</p>
       </li>
       <li>
         <div class="row"><a class="title" href="https://github.com/r5sp/raftkv" target="_blank" rel="noopener">raftkv</a><span class="meta">Python</span></div>
@@ -153,19 +153,19 @@ footer { margin-top: 72px; color: var(--faint); font-size: 14px; }
   </section>
 
   <section aria-labelledby="consulting">
-    <h2 id="consulting">Consulting</h2>
+    <h2 id="consulting">Contract</h2>
     <ol>
       <li>
         <div class="row"><span class="title">FedEx <span>· Technical Project Manager</span></span><time>2026 – now</time></div>
-        <p>Analytics layer and regression models over 60K monthly shipping records in seven Caribbean markets.</p>
+        <p>Cut demand forecast error 22% with a temporal fusion transformer in PyTorch trained on three years of shipments, served from FastAPI and Docker on AWS at 10K+ queries a day with p95 under 80 ms. A Kafka and Spark pipeline feeds it 60K monthly records across seven markets.</p>
       </li>
       <li>
-        <div class="row"><span class="title">Pfizer <span>· AI &amp; Strategy Senior Analyst</span></span><time>2026</time></div>
-        <p>Prescriber targeting from claims data, and an LLM call-list system for U.S. sales reps built with the startup Markov.</p>
+        <div class="row"><span class="title">Pfizer <span>· AI Senior Analyst</span></span><time>2026</time></div>
+        <p>Ranked prescribers with a two-tower retriever and an XGBoost reranker, raising projected rep efficiency about 20%, and launched an LLM call-list system with the startup Markov that Pfizer's U.S. reps adopted. Scoring runs nightly over 50M+ claims rows in PySpark on Databricks.</p>
       </li>
       <li>
         <div class="row"><span class="title">Supercell <span>· AI Analyst</span></span><time>2025</time></div>
-        <p>Inference cost per session across 7B to 70B models at a million daily users, for evaluating AI-native games.</p>
+        <p>Benchmarked vLLM serving costs on 7B to 70B models to estimate margins for AI-native games at 1M+ daily users, and predicted 30-day churn per title with a Cox survival model (0.81 C-index).</p>
       </li>
     </ol>
   </section>
